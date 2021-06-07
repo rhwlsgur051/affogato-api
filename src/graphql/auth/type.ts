@@ -1,0 +1,18 @@
+import { gql } from "apollo-server-core";
+
+export const authSchema = gql`
+input AuthRequest {
+    email:String!,
+    password:String!,
+}
+
+type AuthResponse {
+    token:String,
+    email:String,
+    name:String,
+}
+
+extend type Mutation {
+    login(body:AuthRequest):AuthResponse
+}
+`
