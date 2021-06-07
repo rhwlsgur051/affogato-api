@@ -32,4 +32,5 @@ DB_USERNAME=Yours
 DB_HOST=Yours
 DB_PASSWORD=Yours
 DB_DATABASE=Yours
+DEV_PWD=yours
 ```
