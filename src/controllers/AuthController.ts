@@ -2,7 +2,8 @@ import db from '../models';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-export const login = async ({ body }: { body: any }) => {
+export const auth = async ({ body }: { body: any }) => {
+    // 이메일로 사용자 조회
     const user = await db.User.findOne(
         {
             where: {
@@ -11,10 +12,9 @@ export const login = async ({ body }: { body: any }) => {
         })
 
     if (!user) {
-        throw new Error("NotFound")
+        throw ({ statusCode: 404, message: "NotFound" })
     }
-
-    const isCorrect = await bcrypt.compare(body.password, user.password);
+    const isCorrect = await bcrypt.compareSync(body.password, user.password);
 
     if (!isCorrect) {
         throw new Error('UnAuthorized')

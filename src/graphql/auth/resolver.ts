@@ -1,11 +1,10 @@
-import { login } from '../../controllers/AuthController';
-import { AuthenticationError } from 'apollo-server-express';
+import { auth } from '../../controllers/AuthController';
+// import { AuthenticationError } from 'apollo-server-express';
 
 export const authResolver = {
   Mutation: {
-    login: (root: any, args: any, { user }: { user: any }) => {
-      if (!user) throw new AuthenticationError('Not Authenticated');
-      return login(args);
+    auth: (root: any, args: any, { user }: { user: any }) => {
+      return auth(args);
     }
   }
 }

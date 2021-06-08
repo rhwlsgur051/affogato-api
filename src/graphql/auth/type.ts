@@ -13,6 +13,6 @@ type AuthResponse {
 }
 
 extend type Mutation {
-    login(body:AuthRequest):AuthResponse
+    auth(body:AuthRequest):AuthResponse
 }
 `
