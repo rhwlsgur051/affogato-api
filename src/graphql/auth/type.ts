@@ -4,6 +4,7 @@ export const authSchema = gql`
 input AuthRequest {
     email:String!,
     password:String!,
+    mode:String!
 }
 
 type AuthResponse {

@@ -20,6 +20,14 @@ export const auth = async ({ body }: { body: any }) => {
         throw new Error('UnAuthorized')
     }
 
+    switch (body.mode) {
+        case 'chao':
+            if (user.name !== '우정아') throw ({ statusCode: 401, message: 'UnAuthorized' }); break;
+        case 'hyucbird':
+            if (user.name !== '고진혁') throw ({ statusCode: 401, message: "UnAuthorized" }); break;
+        default: break;
+    }
+
     const token = jwt.sign({
         email: user.email,
         name: user.name

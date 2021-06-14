@@ -10,12 +10,13 @@ const db: any = {};
 
 let sequelize: any;
 if (env === 'local') {
-  dotenv.config({path:`.env.local`});
+  dotenv.config({ path: `.env.local` });
   sequelize = new Sequelize({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     host: process.env.DB_HOST,
+    port: 3306,
     dialect: 'mysql'
   });
 }
@@ -23,7 +24,7 @@ if (env === 'local') {
 fs
   .readdirSync(__dirname)
   .filter((file: string) => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.ts' ||  (file.slice(-3) === '.js'));
+    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.ts' || file.slice(-3) === '.js');
   })
   .forEach((file: any) => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);

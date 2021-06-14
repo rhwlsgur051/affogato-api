@@ -32,7 +32,6 @@ server.applyMiddleware({
 });
 
 const port = 4000;
-
 db.sequelize.sync().then(async () => {
     console.log(`\u001b[32mSequelize Connected\u001b[0m`)
 
