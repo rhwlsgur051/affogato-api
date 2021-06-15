@@ -1,7 +1,7 @@
 export const users = [
     {
-        name: '관리자',
-        email: 'admin@rhwlsgur.com',
+        name: '홍길동',
+        email: 'gildong.hong@naver.com',
         password: process.env.DEV_PWD,
     },
     {

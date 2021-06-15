@@ -43,12 +43,15 @@ module.exports = (sequelize: any, DataTypes: any) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      // get(){
+      //   return '복호화 이메일';
+      // }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      set(value:string) { // 암호화
-        const hash = bcrypt.hashSync(value, 10); 
+      set(value: string) { // 암호화
+        const hash = bcrypt.hashSync(value, 10);
         this.setDataValue('password', hash);
       },
     }
