@@ -1,5 +1,4 @@
 import { auth } from '../../controllers/AuthController';
-// import { AuthenticationError } from 'apollo-server-express';
 
 export const authResolver = {
   Mutation: {
