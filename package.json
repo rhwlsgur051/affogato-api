@@ -9,12 +9,13 @@
     "dev": "cross-env NODE_ENV=local ts-node-dev --respawn --transpile-only src/server.ts",
     "watch": "cross-env NODE_ENV=local nodemon --config nodemon.json",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc":"tsc -p tsconfig.build.json",
-    "build":"rm -rf dist && npm run tsc"
+    "tsc": "tsc -p tsconfig.build.json",
+    "build": "rm -rf dist && npm run tsc"
   },
   "keywords": [],
   "license": "ISC",
   "dependencies": {
+    "@types/graphql": "^14.5.0",
     "apollo-server": "^2.25.0",
     "apollo-server-express": "^2.25.0",
     "bcrypt": "^5.0.1",
@@ -24,7 +25,10 @@
     "graphql": "^15.5.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
-    "sequelize": "^6.6.2"
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.6.2",
+    "type-graphql": "^1.1.1",
+    "typedi": "^0.10.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

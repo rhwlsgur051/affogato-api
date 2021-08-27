@@ -5,6 +5,9 @@
 #### Modules
 - apollo-server-express
 - graphql
+- @types/graphql
+- type-graphql
+- typedi
 - express
 - cross-env
 - dotenv
@@ -13,6 +16,7 @@
 - mysql2
 - sequelize
 - typescript
+- reflect-metadata
 
 #### Run
 ```
