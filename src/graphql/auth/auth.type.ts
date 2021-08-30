@@ -4,7 +4,7 @@ import { ArgsType, Field, ObjectType } from "type-graphql";
 @ArgsType()
 export class AuthRequest {
     @Field()
-    email!: string;
+    userId!: string;
     @Field()
     password!: string;
 }
@@ -13,7 +13,7 @@ export class AuthRequest {
 @ObjectType()
 export class AuthResponse {
     @Field()
-    email?: string;
+    userId?: string;
     @Field()
     name?: string;
     @Field()

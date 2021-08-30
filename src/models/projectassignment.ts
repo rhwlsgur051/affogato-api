@@ -3,14 +3,14 @@ import { Model } from 'sequelize';
 
 interface ProjectAssignmentsAttributes {
   ProjectId: number;
-  email: string;
+  userId: string;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
   class ProjectAssignment extends Model<ProjectAssignmentsAttributes> {
 
     ProjectId!: number;
-    email!: string;
+    userId!: string;
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -31,7 +31,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         key: 'id',
       }
     },
-    email: {
+    userId: {
       type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true,

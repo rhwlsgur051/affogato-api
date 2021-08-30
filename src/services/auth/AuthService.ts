@@ -6,12 +6,12 @@ import { Service } from 'typedi';
 
 @Service()
 export class AuthService {
-    auth = async (body: { email: string, password: string }) => {
+    auth = async (body: { userId: string, password: string }) => {
         // 이메일로 사용자 조회
         const user = await db.User.findOne(
             {
                 where: {
-                    email: body.email
+                    userId: body.userId
                 }
             })
 
@@ -25,14 +25,14 @@ export class AuthService {
         }
 
         const token = jwt.sign({
-            email: user.email,
+            userId: user.userId,
             name: user.name
         }, process.env.JWT_SECRET_KEY || '')
 
         console.log('in');
         return {
             token,
-            email: user.email,
+            userId: user.userId,
             name: user.name
         }
     }

@@ -11,7 +11,6 @@ import { UserResolver } from './graphql/user/user.resolver';
 import { ChatResolver } from './graphql/chat/chat.resolver';
 
 async function bootstrap() {
-
     // resolvers: [__dirname + "/**/*.resolver.ts"],
     const schema = await buildSchema({
         resolvers: [AuthResolver, UserResolver, ChatResolver],
@@ -29,7 +28,7 @@ async function bootstrap() {
 
             const user = await db.User.findOne({
                 where: {
-                    email: tUser.email
+                    userId: tUser.userId
                 }
             })
             return { user };
@@ -51,16 +50,6 @@ async function bootstrap() {
         app.listen(port, () => {
             console.log(`\u001b[32mServer Listening at ${port} \u001b[0m`)
         });
-
-        // /**
-        //  * 기초데이터 적재
-        //  */
-        // const userController = app.get(UserRetrieveService);
-        //  new UserController();
-        // const dbUsers = await userController.getUsers();
-        // if (!dbUsers.length) {
-        //     await db.User.bulkCreate(users);
-        // }
     });
 }
 

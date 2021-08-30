@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 interface UserAttributes {
   id: number;
   name: string;
-  email: string;
+  userId: string;
   password: string;
 }
 
@@ -19,7 +19,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
     id!: number;
     name!: string;
-    email!: string;
+    userId!: string;
     password!: string;
 
     static associate(models: any) {
@@ -39,7 +39,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
       type: DataTypes.STRING
       , allowNull: false
     },
-    email: {
+    userId: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,

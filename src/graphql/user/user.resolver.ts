@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { Mutation, Query, Resolver } from 'type-graphql';
+import { Args, Mutation, Query, Resolver } from 'type-graphql';
 import { UserChangeService } from '../../services/user/UserChange.service';
 import { UserRetrieveService } from '../../services/user/UserRetrieve.service';
 import * as UserType from './user.type';
@@ -17,8 +17,9 @@ export class UserResolver {
     return this.userRetrieveService.find();
   }
 
-  // @Mutation()
-  // createChat(@Args() body: ChatType.CreateRequest) {
-  //   return this.chatChangeService.create(body)
-  // }
+  @Mutation(() => Boolean)
+  createUser(@Args() body: UserType.CreateRequest) {
+    console.log('====>', body);
+    return this.userChangeService.create(body)
+  }
 }
