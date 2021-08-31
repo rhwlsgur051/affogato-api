@@ -1,10 +1,10 @@
 export const assignments = [
     {
         ProjectId: 1,
-        userId:'rhwlsgur051@gmail.com'
+        userId:'rhwlsgur051'
     },
     {
-        ProjectId:1,
-        userId:'rhwlsgur051@gmail.com'
+        ProjectId:2,
+        userId:'rhwlsgur051'
     }
 ]

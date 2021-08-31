@@ -1,6 +1,6 @@
 export const users = [{
-        name: 'rhwlsgur051',
-        userId: 'rhwlsgur051@gmail.com',
+        name: '고진혁',
+        userId: 'rhwlsgur051',
     },
     {
         name: 'hong gil dong',

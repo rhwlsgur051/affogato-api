@@ -13,9 +13,11 @@ export class AuthRequest {
 @ObjectType()
 export class AuthResponse {
     @Field()
-    userId?: string;
+    userId!: string;
     @Field()
-    name?: string;
+    name!: string;
     @Field()
-    token?: string;
+    token!: string;
+    @Field()
+    id!: number;
 }

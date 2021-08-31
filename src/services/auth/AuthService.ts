@@ -1,7 +1,7 @@
 import db from '../../models';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { AuthError } from '../../common/AuthErrors';
+import { AuthError } from '../../common/AuthError';
 import { Service } from 'typedi';
 
 @Service()
@@ -28,12 +28,11 @@ export class AuthService {
             userId: user.userId,
             name: user.name
         }, process.env.JWT_SECRET_KEY || '')
-
-        console.log('in');
         return {
             token,
             userId: user.userId,
-            name: user.name
+            name: user.name,
+            id: user.id,
         }
     }
 }

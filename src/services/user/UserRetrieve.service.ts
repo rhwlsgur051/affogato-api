@@ -1,3 +1,4 @@
+import { UserError } from "../../common/UserError";
 import { Service } from "typedi";
 import db from "../../models";
 
@@ -13,4 +14,18 @@ export class UserRetrieveService {
         return users;
     }
 
+    // 사용자 단건 조회
+    async findOne(id: number) {
+        const user = await db.User.findOne({
+            where: {
+                id
+            }
+        });
+
+        if (!user) {
+            throw new UserError().USER001;
+        }
+
+        return user;
+    }
 }
