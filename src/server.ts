@@ -9,11 +9,19 @@ import { AuthResolver } from './graphql/auth/auth.resolver';
 import Container from 'typedi';
 import { UserResolver } from './graphql/user/user.resolver';
 import { ChatResolver } from './graphql/chat/chat.resolver';
+import { BoardResolver } from './graphql/board/board.resolver';
 
 async function bootstrap() {
+    const resolvers: any = [
+        AuthResolver, // 인증
+        UserResolver, // 사용자 
+        ChatResolver, // 채팅
+        BoardResolver // 게시판
+    ];
+
     // resolvers: [__dirname + "/**/*.resolver.ts"],
     const schema = await buildSchema({
-        resolvers: [AuthResolver, UserResolver, ChatResolver],
+        resolvers,
         validate: false,
         container: Container
     });
