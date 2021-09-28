@@ -1,7 +1,9 @@
-// import { BoardError } from "../../common/UserError";
 import * as _ from 'lodash';
 import { Service } from "typedi";
 import db from "../../models";
+
+import { BoardError } from '../../common/BoardError';
+import { UserError } from '../../common/UserError';
 
 @Service()
 export class BoardRetrieveService {
@@ -28,10 +30,16 @@ export class BoardRetrieveService {
             }
         });
 
+        const rUser = await db.User.findOne({ where: { id: board.userSeq } });
+
+        if (!rUser) {
+            throw new UserError().USER001;
+        }
         if (!board) {
-            // throw new UserError().USER001;
+            throw new BoardError().Board001;
         }
 
+        board.userName = rUser.name;
         return board;
     }
 }
