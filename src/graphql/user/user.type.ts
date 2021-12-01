@@ -20,4 +20,6 @@ export class UserResponse {
     userId!: string;
     @Field()
     name!: string;
+    @Field()
+    email!: string;
 }

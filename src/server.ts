@@ -10,6 +10,7 @@ import Container from 'typedi';
 import { UserResolver } from './graphql/user/user.resolver';
 import { ChatResolver } from './graphql/chat/chat.resolver';
 import { BoardResolver } from './graphql/board/board.resolver';
+import { copyFile } from 'fs';
 
 async function bootstrap() {
     const resolvers: any = [
@@ -55,8 +56,32 @@ async function bootstrap() {
     db.sequelize.sync().then(async () => {
         console.log(`\u001b[32mSequelize Connected\u001b[0m`)
 
-        app.listen(port, () => {
+        app.listen(port, async () => {
             console.log(`\u001b[32mServer Listening at ${port} \u001b[0m`)
+
+            const dbUsers = await db.User.findAll();
+
+            if (!dbUsers.length) {
+                // 사용자 생성
+                await db.User.create({
+                    name: '고진혁',
+                    userId: 'hyucbird',
+                    password: '1234',
+                    email:'rhwlsgur051@gmail.com',
+                });
+
+                await db.User.create({
+                    name: '우정아',
+                    userId: 'chao',
+                    password: '1234',
+                    email:'gogel0118@gmail.com',
+                });
+            } 
+
+            // const user = await db.User.findAll({
+            // })
+            // console.log(user[0]);
+
         });
     });
 }

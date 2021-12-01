@@ -17,6 +17,8 @@ export class AuthResponse {
     @Field()
     name!: string;
     @Field()
+    email!: string;
+    @Field()
     token!: string;
     @Field()
     id!: number;
