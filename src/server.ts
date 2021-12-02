@@ -1,6 +1,6 @@
 'use strict'
 import express from 'express';
-import { ApolloServer, AuthenticationError } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
 import db from './models';
 import jwt from 'jsonwebtoken';
 import "reflect-metadata";
@@ -10,12 +10,11 @@ import Container from 'typedi';
 import { UserResolver } from './graphql/user/user.resolver';
 import { ChatResolver } from './graphql/chat/chat.resolver';
 import { BoardResolver } from './graphql/board/board.resolver';
-import { copyFile } from 'fs';
 
 async function bootstrap() {
     const resolvers: any = [
         AuthResolver, // 인증
-        UserResolver, // 사용자 
+        UserResolver, // 사용자
         ChatResolver, // 채팅
         BoardResolver // 게시판
     ];
