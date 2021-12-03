@@ -12,12 +12,14 @@ export class BoardChangeService {
 
     // 게시글 삭제
     async delete(id: number) {
-        return await db.Board.update({
+        await db.Board.update({
             isDeleted: true
         }, {
             where: {
                 id
             }
         });
+
+        return true;
     }
 }
