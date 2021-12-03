@@ -5,7 +5,6 @@ import bcrypt from 'bcrypt';
 interface UserAttributes {
   id: number;
   name: string;
-  userId: string;
   password: string;
   email: string;
 }
@@ -20,7 +19,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
     id!: number;
     name!: string;
-    userId!: string;
     password!: string;
     email!: string;
 
@@ -40,14 +38,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
     name: {
       type: DataTypes.STRING
       , allowNull: false
-    },
-    userId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      // get(){
-      //   return '복호화 이메일';
-      // }
     },
     email: {
       type: DataTypes.STRING,

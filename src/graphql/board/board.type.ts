@@ -1,6 +1,6 @@
-import { ArgsType, Field, ObjectType } from "type-graphql";
+import { ArgsType, Field, Int, ObjectType } from "type-graphql";
 
-// 요청객체
+// 등록 요청객체
 @ArgsType()
 export class CreateRequest {
     @Field()
@@ -11,6 +11,13 @@ export class CreateRequest {
 
     @Field()
     content!: string;
+}
+
+// 단건조회 요청객체
+@ArgsType()
+export class FindOneBoardRequest {
+    @Field(type => Int, { nullable: false })
+    id?: number;
 }
 
 // 응답객체

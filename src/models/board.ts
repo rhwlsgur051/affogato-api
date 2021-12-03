@@ -5,7 +5,7 @@ interface BoardAttributes {
   id: number;
   title: string;
   content: string;
-  isDeleted: boolean;
+  isDeleted: Boolean;
   userSeq: number;
 }
 
@@ -15,7 +15,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     title!: string;
     content!: string;
     userSeq!: number;
-    isDeleted!: boolean;
+    isDeleted!: Boolean;
   };
   Board.init({
     id: {
@@ -28,11 +28,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
       allowNull: false,
     },
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     isDeleted: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.TINYINT,
       allowNull: false,
       defaultValue: false,
     },

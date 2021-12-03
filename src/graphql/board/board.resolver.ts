@@ -18,12 +18,18 @@ export class BoardResolver {
   }
 
   @Query(() => BoardType.BoardResponse)
-  findBoard(@Arg('id') id: number) {
+  findBoard(@Args() { id }: BoardType.FindOneBoardRequest) {
     return this.boardRetrieveService.findOne(id);
   }
 
   @Mutation(() => Boolean)
-  createBoard(@Args() body: BoardType.CreateRequest) {
-    return this.boardChangeService.create(body)
+  createBoard(@Args() { userSeq, title, content }: BoardType.CreateRequest) {
+    return this.boardChangeService.create({ userSeq, title, content });
+  }
+
+  @Mutation(() => Boolean)
+  deleteBoard(@Arg('boardId') boardId: number) {
+    return this.boardChangeService.delete(boardId);
   }
 }
+

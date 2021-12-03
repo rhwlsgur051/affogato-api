@@ -9,7 +9,7 @@ export class UserChangeService {
     async create(body: any) {
         const rUser = await db.User.findOne({
             where: {
-                userId: body.userId
+                email: body.email
             }
         })
 

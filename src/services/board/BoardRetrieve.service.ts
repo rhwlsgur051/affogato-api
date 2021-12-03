@@ -11,7 +11,12 @@ export class BoardRetrieveService {
     async find() {
         const rUsers = await db.User.findAll();
         const rBoards = await db.Board.findAll(
-            { order: [['id','DESC']] }
+            {
+                order: [['id', 'DESC']],
+                where: {
+                    isDeleted: false
+                }
+            }
         );
 
         _.forEach(rBoards, rBoard => {
@@ -25,10 +30,11 @@ export class BoardRetrieveService {
     }
 
     // 게시판 단건 조회
-    async findOne(id: number) {
+    async findOne(id: any) {
         const board = await db.Board.findOne({
             where: {
-                id
+                id,
+                isDeleted: false
             }
         });
 

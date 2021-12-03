@@ -9,4 +9,15 @@ export class BoardChangeService {
         await db.Board.create(body);
         return true;
     }
+
+    // 게시글 삭제
+    async delete(id: number) {
+        return await db.Board.update({
+            isDeleted: true
+        }, {
+            where: {
+                id
+            }
+        });
+    }
 }

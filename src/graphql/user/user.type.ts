@@ -4,7 +4,7 @@ import { ArgsType, Field, ObjectType } from "type-graphql";
 @ArgsType()
 export class CreateRequest {
     @Field()
-    userId?: string;
+    email?: string;
 
     @Field()
     name!: string;
@@ -32,8 +32,6 @@ export class ChangePasswordRequest {
 // 응답객체
 @ObjectType()
 export class UserResponse {
-    @Field()
-    userId!: string;
     @Field()
     name!: string;
     @Field()

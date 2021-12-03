@@ -36,7 +36,7 @@ async function bootstrap() {
 
             const user = await db.User.findOne({
                 where: {
-                    userId: tUser.userId
+                    email: tUser.email
                 }
             })
             return { user };
@@ -64,14 +64,12 @@ async function bootstrap() {
                 // 사용자 생성
                 await db.User.create({
                     name: '고진혁',
-                    userId: 'hyucbird',
                     password: '1234',
                     email:'rhwlsgur051@gmail.com',
                 });
 
                 await db.User.create({
                     name: '우정아',
-                    userId: 'chao',
                     password: '1234',
                     email:'gogel0118@gmail.com',
                 });
