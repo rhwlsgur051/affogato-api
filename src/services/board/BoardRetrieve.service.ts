@@ -10,7 +10,9 @@ export class BoardRetrieveService {
     // 게시판 목록 조회
     async find() {
         const rUsers = await db.User.findAll();
-        const rBoards = await db.Board.findAll();
+        const rBoards = await db.Board.findAll(
+            { order: [['id','DESC']] }
+        );
 
         _.forEach(rBoards, rBoard => {
             const boardUser = _.find(rUsers, rUser => rUser.id === rBoard.userSeq);
