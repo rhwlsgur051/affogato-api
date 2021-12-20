@@ -18,7 +18,7 @@ export class CreateRequest {
 export class ChangePasswordRequest {
     @Field()
     userSeq!: number;
-    
+
     @Field()
     oldPassword!: string;
 
@@ -38,4 +38,6 @@ export class UserResponse {
     email!: string;
     @Field()
     userSeq!: string;
+    @Field(type => [String], { nullable: true })
+    friends!: object;
 }
