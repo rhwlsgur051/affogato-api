@@ -15,10 +15,10 @@ export class UserRetrieveService {
     }
 
     // 사용자 단건 조회
-    async findOne(id: number) {
+    async findOne(userSeq: number) {
         const user = await db.User.findOne({
             where: {
-                id
+                userSeq
             }
         });
 

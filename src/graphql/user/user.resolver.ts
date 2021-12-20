@@ -20,8 +20,8 @@ export class UserResolver {
 
   // 사용자 단건조회
   @Query(() => UserType.UserResponse)
-  findUser(@Arg('id') id: number) {
-    return this.userRetrieveService.findOne(id);
+  findUser(@Arg('userSeq') userSeq: number) {
+    return this.userRetrieveService.findOne(userSeq);
   }
 
   // 회원가입

@@ -31,7 +31,7 @@ export class AuthService {
         return {
             token,
             name: user.name,
-            id: user.id,
+            userSeq: user.userSeq,
             email: user.email,
         }
     }

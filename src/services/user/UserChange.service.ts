@@ -24,7 +24,7 @@ export class UserChangeService {
     async changePassword(body: any) {
         const rUser = await db.User.findOne({
             where: {
-                id: body.id
+                userSeq: body.userSeq
             }
         });
 
@@ -44,7 +44,7 @@ export class UserChangeService {
             },
                 {
                     where: {
-                        id: body.id
+                        userSeq: body.userSeq
                     }
                 }
             );

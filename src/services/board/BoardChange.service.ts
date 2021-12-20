@@ -11,12 +11,12 @@ export class BoardChangeService {
     }
 
     // 게시글 삭제
-    async delete(id: number) {
+    async delete(boardSeq: number) {
         await db.Board.update({
             isDeleted: true
         }, {
             where: {
-                id
+                boardSeq
             }
         });
 

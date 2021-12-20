@@ -2,7 +2,7 @@
 import { Model } from 'sequelize';
 
 interface BoardAttributes {
-  id: number;
+  boardSeq: number;
   title: string;
   content: string;
   isDeleted: Boolean;
@@ -11,14 +11,14 @@ interface BoardAttributes {
 
 module.exports = (sequelize: any, DataTypes: any) => {
   class Board extends Model<BoardAttributes> implements BoardAttributes {
-    id!: number;
+    boardSeq!: number;
     title!: string;
     content!: string;
     userSeq!: number;
     isDeleted!: Boolean;
   };
   Board.init({
-    id: {
+    boardSeq: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true

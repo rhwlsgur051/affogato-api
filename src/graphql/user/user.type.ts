@@ -17,7 +17,7 @@ export class CreateRequest {
 @ArgsType()
 export class ChangePasswordRequest {
     @Field()
-    id!: number;
+    userSeq!: number;
     
     @Field()
     oldPassword!: string;
@@ -37,5 +37,5 @@ export class UserResponse {
     @Field()
     email!: string;
     @Field()
-    id!: string;
+    userSeq!: string;
 }

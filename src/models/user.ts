@@ -3,7 +3,7 @@ import { Model } from 'sequelize';
 import bcrypt from 'bcrypt';
 
 interface UserAttributes {
-  id: number;
+  userSeq: number;
   name: string;
   password: string;
   email: string;
@@ -11,26 +11,23 @@ interface UserAttributes {
 
 module.exports = (sequelize: any, DataTypes: any) => {
   class User extends Model<UserAttributes> implements UserAttributes {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-
-    id!: number;
+    userSeq!: number;
     name!: string;
     password!: string;
     email!: string;
 
     static associate(models: any) {
       // define association here
-      User.belongsToMany(models.Project, {
-        through: 'ProjectAssignments'
-      })
+      User.belongsToMany(models.User, {
+        as: 'friends',
+        through: 'Friend',
+        foreignKey: 'userSeq',
+        otherKey: 'otherSeq'
+      });
     }
   };
   User.init({
-    id: {
+    userSeq: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,

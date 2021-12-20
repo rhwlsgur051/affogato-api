@@ -17,14 +17,14 @@ export class CreateRequest {
 @ArgsType()
 export class FindOneBoardRequest {
     @Field(type => Int, { nullable: false })
-    id?: number;
+    boardSeq?: number;
 }
 
 // 응답객체
 @ObjectType()
 export class BoardResponse {
     @Field()
-    id!: number;
+    boardSeq!: number;
     @Field()
     userSeq!: number;
 

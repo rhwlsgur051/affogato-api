@@ -19,5 +19,5 @@ export class AuthResponse {
     @Field()
     token!: string;
     @Field()
-    id!: number;
+    userSeq!: number;
 }

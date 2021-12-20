@@ -10,9 +10,9 @@ export class BoardRetrieveService {
     // 게시판 목록 조회
     async find() {
         const rUsers = await db.User.findAll();
-        const rBoards = await db.Board.findAll(
+        const rBoards = await db.Board.findAll( 
             {
-                order: [['id', 'DESC']],
+                order: [['boardSeq', 'DESC']],
                 where: {
                     isDeleted: false
                 }
@@ -20,7 +20,7 @@ export class BoardRetrieveService {
         );
 
         _.forEach(rBoards, rBoard => {
-            const boardUser = _.find(rUsers, rUser => rUser.id === rBoard.userSeq);
+            const boardUser = _.find(rUsers, rUser => rUser.userSeq === rBoard.userSeq);
             if (boardUser) {
                 rBoard.userName = boardUser.name;
             }
@@ -30,15 +30,15 @@ export class BoardRetrieveService {
     }
 
     // 게시판 단건 조회
-    async findOne(id: any) {
+    async findOne(boardSeq: any) {
         const board = await db.Board.findOne({
             where: {
-                id,
+                boardSeq,
                 isDeleted: false
             }
         });
 
-        const rUser = await db.User.findOne({ where: { id: board.userSeq } });
+        const rUser = await db.User.findOne({ where: { userSeq: board.userSeq } });
 
         if (!rUser) {
             throw new UserError().USER001;

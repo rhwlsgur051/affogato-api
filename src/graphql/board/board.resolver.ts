@@ -18,8 +18,8 @@ export class BoardResolver {
   }
 
   @Query(() => BoardType.BoardResponse)
-  findBoard(@Args() { id }: BoardType.FindOneBoardRequest) {
-    return this.boardRetrieveService.findOne(id);
+  findBoard(@Args() { boardSeq }: BoardType.FindOneBoardRequest) {
+    return this.boardRetrieveService.findOne(boardSeq);
   }
 
   @Mutation(() => Boolean)
@@ -28,8 +28,8 @@ export class BoardResolver {
   }
 
   @Mutation(() => Boolean)
-  deleteBoard(@Arg('boardId') boardId: number) {
-    return this.boardChangeService.delete(boardId);
+  deleteBoard(@Arg('boardSeq') boardSeq: number) {
+    return this.boardChangeService.delete(boardSeq);
   }
 }
 

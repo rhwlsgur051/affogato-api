@@ -15,7 +15,7 @@ async function bootstrap() {
     const resolvers: any = [
         AuthResolver, // 인증
         UserResolver, // 사용자
-        ChatResolver, // 채팅
+        // ChatResolver, // 채팅
         BoardResolver // 게시판
     ];
 
