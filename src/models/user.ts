@@ -17,12 +17,15 @@ module.exports = (sequelize: any, DataTypes: any) => {
     email!: string;
 
     static associate(models: any) {
-      // define association here
-      User.belongsToMany(models.Friend, {
+      User.belongsToMany(models.User, { 
         as: 'friends',
-        through: 'Friend',
         foreignKey: 'userSeq',
-        otherKey: 'otherSeq'
+        through: models.Friend
+      });
+      User.belongsToMany(models.User, { 
+        as: 'userFriends',
+        foreignKey: 'otherSeq',
+        through: models.Friend
       });
     }
   };
@@ -53,5 +56,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
     sequelize,
     modelName: 'User',
   });
+
   return User;
 };

@@ -11,19 +11,14 @@ export class UserRetrieveService {
             where: {
                 [Op.not]: [
                     { userSeq: userSeq || '' }
-                ]
+                ],
             }
         };
-        const friends = await db.Friend.findAll({});
-
         const users = await db.User.findAll({
-            include: [{
-                model: db.Friend,
-                as:'friends'
-            }],
-            ...conditions
+            ...conditions,
+            include:'friends'
         });
-
+        
         return users;
     }
 

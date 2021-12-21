@@ -29,6 +29,8 @@ export class ChangePasswordRequest {
     newPasswordConfirm!: string;
 }
 
+
+
 // 응답객체
 @ObjectType()
 export class UserResponse {
@@ -38,6 +40,6 @@ export class UserResponse {
     email!: string;
     @Field()
     userSeq!: string;
-    @Field(type => [String], { nullable: true })
-    friends!: object;
+    @Field()
+    friends!: string;
 }

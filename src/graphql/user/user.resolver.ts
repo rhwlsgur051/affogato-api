@@ -3,7 +3,6 @@ import { Arg, Args, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { UserChangeService } from '../../services/user/UserChange.service';
 import { UserRetrieveService } from '../../services/user/UserRetrieve.service';
 import * as UserType from './user.type';
-import { Context } from 'vm';
 
 @Service()
 @Resolver()
