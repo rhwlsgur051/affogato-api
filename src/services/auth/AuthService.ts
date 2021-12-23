@@ -8,9 +8,8 @@ import { Equal } from 'typeorm';
 @Service()
 export class AuthService {
     auth = async (body: { email: string, password: string }) => {
-        console.log(body.email);
         // 이메일로 사용자 조회
-        const user = await User.findOne({ email: Equal(body.email) })
+        const user = await User.findOne({ email: Equal(body.email) }, { relations: ['friends'] })
 
         if (!user) {
             throw new AuthError().AU001;
@@ -20,6 +19,13 @@ export class AuthService {
         if (!isCorrect) {
             throw new AuthError().AU001;
         }
+
+        // const user2= await User.findOne({ email: Equal('gogel0118@gmail.com') });
+
+        // user2 ? user.friends.push(user2) : '';
+        // user.save();
+
+        console.log(user.friends);
 
         const token = jwt.sign({
             name: user.name,
