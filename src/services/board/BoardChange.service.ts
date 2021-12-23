@@ -1,23 +1,21 @@
+import { CreateRequest } from "../../graphql/board/api/BoardRequest";
+import { Board } from "../../graphql/board/entity/Board.entity";
 import { Service } from "typedi";
-import db from "../../models";
-import * as BoardType from '../../graphql/board/board.type'
 
 @Service()
 export class BoardChangeService {
     // 게시글 생성
-    async create(body: BoardType.CreateRequest) {
-        await db.Board.create(body);
+    async create(body: CreateRequest) {
+        await Board.insert(body);
         return true;
     }
 
     // 게시글 삭제
     async delete(boardSeq: number) {
-        await db.Board.update({
-            isDeleted: true
+        await Board.update({
+            boardSeq
         }, {
-            where: {
-                boardSeq
-            }
+            isDeleted: true
         });
 
         return true;

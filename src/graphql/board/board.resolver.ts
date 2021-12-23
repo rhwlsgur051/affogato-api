@@ -2,7 +2,9 @@ import { Service } from 'typedi';
 import { Arg, Args, Mutation, Query, Resolver } from 'type-graphql';
 import { BoardChangeService } from '../../services/board/BoardChange.service';
 import { BoardRetrieveService } from '../../services/board/BoardRetrieve.service';
-import * as BoardType from './board.type';
+import { BoardResponse } from './api/BoardResponse';
+import { FindOneBoardRequest } from './api/BoardRequest';
+import { CreateRequest } from '../../graphql/board/api/BoardRequest';
 
 @Service()
 @Resolver()
@@ -12,18 +14,18 @@ export class BoardResolver {
     private readonly boardRetrieveService: BoardRetrieveService
   ) { }
 
-  @Query(() => [BoardType.BoardResponse])
+  @Query(() => [BoardResponse])
   findBoardList() {
     return this.boardRetrieveService.find();
   }
 
-  @Query(() => BoardType.BoardResponse)
-  findBoard(@Args() { boardSeq }: BoardType.FindOneBoardRequest) {
+  @Query(() => BoardResponse)
+  findBoard(@Args() { boardSeq }: FindOneBoardRequest) {
     return this.boardRetrieveService.findOne(boardSeq);
   }
 
   @Mutation(() => Boolean)
-  createBoard(@Args() { userSeq, title, content }: BoardType.CreateRequest) {
+  createBoard(@Args() { userSeq, title, content }: CreateRequest) {
     return this.boardChangeService.create({ userSeq, title, content });
   }
 

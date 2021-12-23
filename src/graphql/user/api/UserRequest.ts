@@ -1,4 +1,4 @@
-import { ArgsType, Field, ObjectType } from "type-graphql";
+import { ArgsType, Field } from "type-graphql";
 
 // 요청객체
 @ArgsType()
@@ -13,7 +13,6 @@ export class CreateRequest {
     password!: string;
 }
 
-// 비밀번호 변경 요청객체
 @ArgsType()
 export class ChangePasswordRequest {
     @Field()
@@ -27,19 +26,4 @@ export class ChangePasswordRequest {
 
     @Field()
     newPasswordConfirm!: string;
-}
-
-
-
-// 응답객체
-@ObjectType()
-export class UserResponse {
-    @Field()
-    name!: string;
-    @Field()
-    email!: string;
-    @Field()
-    userSeq!: string;
-    @Field()
-    friends!: string;
 }

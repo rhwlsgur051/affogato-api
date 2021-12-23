@@ -1,7 +1,7 @@
 {
   "name": "server-graphql",
   "version": "1.0.0",
-  "description": "graphql+express+sequelize",
+  "description": "graphql+express+typeorm",
   "main": "server.ts",
   "author": "",
   "scripts": {
@@ -27,9 +27,9 @@
     "lodash": "^4.17.21",
     "mysql2": "^2.2.5",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^6.6.2",
     "type-graphql": "^1.1.1",
-    "typedi": "^0.10.0"
+    "typedi": "^0.10.0",
+    "typeorm": "^0.2.41"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

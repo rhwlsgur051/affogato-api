@@ -1,19 +1,16 @@
-import db from '../../models';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { AuthError } from '../../common/AuthError';
+import { AuthError } from '../../common/error/AuthError';
 import { Service } from 'typedi';
+import { User } from '../../graphql/user/entity/User.entity';
+import { Equal } from 'typeorm';
 
 @Service()
 export class AuthService {
     auth = async (body: { email: string, password: string }) => {
+        console.log(body.email);
         // 이메일로 사용자 조회
-        const user = await db.User.findOne(
-            {
-                where: {
-                    email: body.email
-                }
-            })
+        const user = await User.findOne({ email: Equal(body.email) })
 
         if (!user) {
             throw new AuthError().AU001;

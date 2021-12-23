@@ -1,31 +1,28 @@
 import { Service } from "typedi";
 import bcrypt from 'bcrypt';
-import db from "../../models";
-import { UserError } from "../../common/UserError";
+import { UserError } from "../../common/error/UserError";
+import { User } from "../../graphql/user/entity/User.entity";
+import { Equal } from "typeorm";
 
 @Service()
 export class UserChangeService {
     // 사용자 생성
     async create(body: any) {
-        const rUser = await db.User.findOne({
-            where: {
-                email: body.email
-            }
+        const rUser = await User.findOne({
+            email: Equal(body.email)
         })
 
         if (rUser) {
             throw new Error("Duplicated");
         }
 
-        return await db.User.create(body);;
+        return await User.insert(body);
     }
 
     // 사용자 비밀번호 변경
     async changePassword(body: any) {
-        const rUser = await db.User.findOne({
-            where: {
-                userSeq: body.userSeq
-            }
+        const rUser = await User.findOne({
+            userSeq: Equal(body.userSeq)
         });
 
         if (!rUser) {
@@ -39,15 +36,8 @@ export class UserChangeService {
         }
 
         if (body.newPassword === body.newPasswordConfirm) {
-            await db.User.update({
-                password: body.newPassword
-            },
-                {
-                    where: {
-                        userSeq: body.userSeq
-                    }
-                }
-            );
+            rUser.password = body.newPassword;
+            await rUser.save();
         }
 
         return true;

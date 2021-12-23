@@ -1,7 +1,4 @@
 ### README
-
-* sequelize-cli
-
 #### Modules
 - apollo-server-express
 - graphql
@@ -14,7 +11,7 @@
 - bcrypt
 - jsonwebtoken
 - mysql2
-- sequelize
+- typeorm
 - typescript
 - reflect-metadata
 
