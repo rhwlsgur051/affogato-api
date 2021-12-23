@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: "Boards" })
 @ObjectType()
@@ -28,5 +28,4 @@ export class Board extends BaseEntity {
     @UpdateDateColumn()
     updatedAt?: string;
 
-    @ManyToMany()
 }
