@@ -47,6 +47,8 @@ export class UserRetrieveService {
         return _.map(rFollows, 'follower');
     }
 
+    
+
     async findOtherUserList(userSeq: number) {
         const rUser: any = await User.findOne({ userSeq: Equal(userSeq) }, { relations: ['following'] });
         const rOtherUsers: any = await User.find({ where: { userSeq: Not(userSeq) }, relations: ['following'] });
