@@ -9,7 +9,7 @@ import { Equal } from 'typeorm';
 export class AuthService {
     auth = async (body: { email: string, password: string }) => {
         // 이메일로 사용자 조회
-        const user = await User.findOne({ email: Equal(body.email) }, { relations: ['friends'] })
+        const user = await User.findOne({ email: Equal(body.email) })
 
         if (!user) {
             throw new AuthError().AU001;

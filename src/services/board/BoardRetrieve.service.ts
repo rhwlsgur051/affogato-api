@@ -11,16 +11,11 @@ import { UserError } from '../../common/error/UserError';
 export class BoardRetrieveService {
     // 게시판 목록 조회
     async find() {
-        const rUsers: User[] = await User.find();
         const rBoards: any = await Board.find({
-            isDeleted: Equal(false)
-        });
-
-        _.forEach(rBoards, rBoard => {
-            const boardUser = _.find(rUsers, rUser => rUser.userSeq === rBoard.userSeq);
-            if (boardUser) {
-                rBoard.userName = boardUser.name;
-            }
+            where: {
+                isDeleted: false
+            },
+            relations: ["user"]
         });
 
         return rBoards;
@@ -28,24 +23,13 @@ export class BoardRetrieveService {
 
     // 게시판 단건 조회
     async findOne(boardSeq: any) {
-        //     const board = await Board.findOne({
-        //         where: {
-        //             boardSeq,
-        //             isDeleted: false
-        //         }
-        //     });
+        const rBoard = await Board.findOne({
+            where: {
+                boardSeq,
+                isDeleted: false
+            }, relations: ['user']
+        });
 
-        //     const rUser = await User.findOne({ userSeq: Equal(board.userSeq) });
-
-        //     if (!rUser) {
-        //         throw new UserError().USER001;
-        //     }
-        //     if (!board) {
-        //         throw new BoardError().Board001;
-        //     }
-
-        //     board.userName = rUser.name;
-        //     return board;
-        // }
+        return rBoard;
     }
 }

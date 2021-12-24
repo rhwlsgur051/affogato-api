@@ -42,4 +42,24 @@ export class UserChangeService {
 
         return true;
     }
+
+    // 친구 팔로잉
+    async followUser(body: any) {
+        const rUser: any = await User.findOne({
+            userSeq: Equal(body.followingUserSeq)
+        }, { relations: ['following'] });
+
+        const targetUser: any = await User.findOne({
+            userSeq: Equal(body.followerUserSeq)
+        });
+
+        if (!rUser || !targetUser) {
+            throw new UserError().USER001;
+        }
+
+        rUser.following.push(targetUser);
+        await rUser.save();
+
+        return true;
+    }
 }

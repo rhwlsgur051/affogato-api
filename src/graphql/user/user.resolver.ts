@@ -3,7 +3,9 @@ import { Arg, Args, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { UserChangeService } from '../../services/user/UserChange.service';
 import { UserRetrieveService } from '../../services/user/UserRetrieve.service';
 import { CreateRequest, ChangePasswordRequest } from './api/UserRequest';
-import { UserResponse } from './api/UserResponse';
+import { UserResponse, OtherUserResponse} from './api/UserResponse';
+import { FollowRequest } from './api/FollowRequest';
+
 @Service()
 @Resolver()
 export class UserResolver {
@@ -12,6 +14,7 @@ export class UserResolver {
     private readonly userRetrieveService: UserRetrieveService
   ) { }
 
+  //! ----- Default CRUD -----
   /**
    * 사용자 목록조회
    * 
@@ -43,6 +46,24 @@ export class UserResolver {
   @Mutation(() => Boolean)
   changePassword(@Args() body: ChangePasswordRequest) {
     return this.userChangeService.changePassword(body);
+  }
+
+  // ! ----- Custom CRUD -----
+  // 내가 팔로잉하는 친구 목록 조회
+  @Query(() => [UserResponse])
+  findUserFollowingList(@Arg('userSeq') userSeq: number) {
+    return this.userRetrieveService.findUserFollowingList(userSeq);
+  }
+
+  // 사용자 목록 조회 (본인제외)
+  @Query(() => [OtherUserResponse])
+  findOtherUserList(@Arg('userSeq') userSeq: number) {
+    return this.userRetrieveService.findOtherUserList(userSeq);
+  }
+
+  @Mutation(() => Boolean)
+  followUser(@Args() body: FollowRequest) {
+    return this.userChangeService.followUser(body);
   }
 
 }
