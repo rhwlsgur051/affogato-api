@@ -20,22 +20,16 @@ export class AuthService {
             throw new AuthError().AU001;
         }
 
-        // const user2= await User.findOne({ email: Equal('gogel0118@gmail.com') });
-
-        // user2 ? user.friends.push(user2) : '';
-        // user.save();
-
-        console.log(user.friends);
-
         const token = jwt.sign({
             name: user.name,
             email: user.email
-        }, process.env.JWT_SECRET_KEY || '')
+        }, process.env.JWT_SECRET_KEY || '');
+
         return {
             token,
             name: user.name,
             userSeq: user.userSeq,
             email: user.email,
-        }
+        };
     }
 }

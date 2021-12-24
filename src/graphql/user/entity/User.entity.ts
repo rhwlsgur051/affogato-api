@@ -1,6 +1,7 @@
 import { PasswordTransformer } from "../../../common/transformers/PasswordTransformer";
 import { Field, ID, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, getRepository, JoinTable, ManyToMany, PrimaryGeneratedColumn, RelationCount, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, getRepository, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, RelationCount, UpdateDateColumn } from "typeorm";
+import { Follow } from "./Follow.entity";
 
 @Entity({ name: "Users" })
 @ObjectType()
@@ -29,22 +30,17 @@ export class User extends BaseEntity {
     @UpdateDateColumn()
     updatedAt?: string;
 
-    @ManyToMany(() => User, user => user.friends, {
-        onDelete: 'CASCADE',
-        cascade: ['insert', 'update'], eager: false
-    })
-    @JoinTable({
-        name: 'UserFriends',
-        joinColumn: {
-            name: 'userSeq1',
-            referencedColumnName: 'userSeq'
-
-        },
-        inverseJoinColumn: {
-            name: 'userSeq2'
-        }
-    })
-    friends!: User[];
+    @OneToMany(
+        () => Follow,
+        follow => follow.following
+      )
+      following!: Follow[];
+    
+      @OneToMany(
+        () => Follow,
+        follow => follow.follower
+      )
+      followers!: Follow[];
 
     /** API */
     static findAll = () =>
