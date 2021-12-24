@@ -4,7 +4,6 @@ import { User } from "../../graphql/user/entity/User.entity";
 import { Equal, Not } from "typeorm";
 import { UserError } from "../../common/error/UserError";
 import { Follow } from '../../graphql/user/entity/Follow.entity';
-import { equal } from 'assert';
 
 @Service()
 export class UserRetrieveService {
