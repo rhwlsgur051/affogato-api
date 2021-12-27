@@ -5,6 +5,7 @@ import { UserRetrieveService } from '../../services/user/UserRetrieve.service';
 import { CreateRequest, ChangePasswordRequest } from './api/UserRequest';
 import { UserResponse, OtherUserResponse} from './api/UserResponse';
 import { FollowRequest } from './api/FollowRequest';
+import { FollowResponse } from './api/FollowResponse';
 
 @Service()
 @Resolver()
@@ -49,10 +50,16 @@ export class UserResolver {
   }
 
   // ! ----- Custom CRUD -----
-  // 내가 팔로잉하는 친구 목록 조회
-  @Query(() => [UserResponse])
+  // 내가 팔로우하는 친구 목록 조회
+  @Query(() => [FollowResponse])
   findUserFollowingList(@Arg('userSeq') userSeq: number) {
     return this.userRetrieveService.findUserFollowingList(userSeq);
+  }
+
+  // 팔로워 목록 조회
+  @Query(() => [FollowResponse])
+  findUserFollowerList(@Arg('userSeq') userSeq: number) {
+    return this.userRetrieveService.findUserFollowerList(userSeq);
   }
 
   // 사용자 목록 조회 (본인제외)

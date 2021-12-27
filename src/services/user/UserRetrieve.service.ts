@@ -33,21 +33,37 @@ export class UserRetrieveService {
 
     // 사용자 팔로잉 조회
     async findUserFollowingList(userSeq: number) {
-        const rFollows: any = await Follow.find({
-            where: {
-                following: Equal(userSeq)
-            },
-            relations: ['follower']
+        let rFollowings: any = await Follow.find({
+            where: [
+                { following: Equal(userSeq) },
+                { follower: Equal(userSeq) },
+            ],
+            relations: ['following', 'follower']
         });
 
-        _.forEach(rFollows, follow => {
-            follow.follower.checked = follow.checked;
+        rFollowings = _.filter(rFollowings, follow => {
+            return follow.follower.userSeq === userSeq ? follow.isChecked : true
         });
 
-        return _.map(rFollows, 'follower');
+        return rFollowings;
     }
 
-    
+    // 사용자 팔로잉 조회
+    async findUserFollowerList(userSeq: number) {
+        let rFollowers: any = await Follow.find({
+            where: [ // ! OR
+                { follower: Equal(userSeq) },
+                { following: Equal(userSeq) }
+            ],
+            relations: ['following', 'follower']
+        });
+
+        rFollowers = _.filter(rFollowers, follow => {
+            return follow.following.userSeq === userSeq ? follow.isChecked : true
+        });
+
+        return rFollowers;
+    }
 
     async findOtherUserList(userSeq: number) {
         const rUser: any = await User.findOne({ userSeq: Equal(userSeq) }, { relations: ['following'] });
