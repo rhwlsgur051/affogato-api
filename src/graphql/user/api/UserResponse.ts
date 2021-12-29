@@ -1,6 +1,4 @@
 import { Field, ObjectType } from "type-graphql";
-import { Follow } from "../entity/Follow.entity";
-import { User } from "../entity/User.entity";
 
 @ObjectType()
 export class UserResponse {
@@ -10,10 +8,6 @@ export class UserResponse {
     email!: string;
     @Field()
     userSeq!: string;
-    @Field(type => [User], { nullable: true })
-    followings!: [User]
-    @Field()
-    checked!: boolean;
 }
 
 @ObjectType()

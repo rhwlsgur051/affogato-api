@@ -3,8 +3,8 @@ import { Arg, Args, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { UserChangeService } from '../../services/user/UserChange.service';
 import { UserRetrieveService } from '../../services/user/UserRetrieve.service';
 import { CreateRequest, ChangePasswordRequest } from './api/UserRequest';
-import { UserResponse, OtherUserResponse} from './api/UserResponse';
-import { FollowRequest } from './api/FollowRequest';
+import { UserResponse, OtherUserResponse } from './api/UserResponse';
+import { FollowRequest, AcceptFollowRequest } from './api/FollowRequest';
 import { FollowResponse } from './api/FollowResponse';
 
 @Service()
@@ -31,46 +31,53 @@ export class UserResolver {
     return this.userRetrieveService.find(userSeq);
   }
 
-  // 사용자 단건조회
+  /** 사용자 단건조회 */
   @Query(() => UserResponse)
   findUser(@Arg('userSeq') userSeq: number) {
     return this.userRetrieveService.findOne(userSeq);
   }
 
-  // 회원가입
+  /** 회원가입 */
   @Mutation(() => Boolean)
   createUser(@Args() body: CreateRequest) {
     return this.userChangeService.create(body)
   }
 
-  // 비밀번호 변경
+  /** 비밀번호 변경 */
   @Mutation(() => Boolean)
   changePassword(@Args() body: ChangePasswordRequest) {
     return this.userChangeService.changePassword(body);
   }
 
   // ! ----- Custom CRUD -----
-  // 내가 팔로우하는 친구 목록 조회
+  /** 내가 팔로우하는 친구 목록 조회 */
   @Query(() => [FollowResponse])
   findUserFollowingList(@Arg('userSeq') userSeq: number) {
     return this.userRetrieveService.findUserFollowingList(userSeq);
   }
 
-  // 팔로워 목록 조회
+  /** 팔로워 목록 조회 */
   @Query(() => [FollowResponse])
   findUserFollowerList(@Arg('userSeq') userSeq: number) {
     return this.userRetrieveService.findUserFollowerList(userSeq);
   }
 
-  // 사용자 목록 조회 (본인제외)
+  /** 사용자 목록 조회 (본인제외) */
   @Query(() => [OtherUserResponse])
   findOtherUserList(@Arg('userSeq') userSeq: number) {
     return this.userRetrieveService.findOtherUserList(userSeq);
   }
 
+  /** 사용자 팔로잉하기 */
   @Mutation(() => Boolean)
   followUser(@Args() body: FollowRequest) {
     return this.userChangeService.followUser(body);
+  }
+
+  /** 사용자 팔로우 수락 */
+  @Mutation(() => Boolean)
+  acceptFollow(@Args() body: AcceptFollowRequest) {
+    return this.userChangeService.acceptFollow(body);
   }
 
 }

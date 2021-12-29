@@ -33,36 +33,68 @@ export class UserRetrieveService {
 
     // 사용자 팔로잉 조회
     async findUserFollowingList(userSeq: number) {
-        let rFollowings: any = await Follow.find({
+        const rFollows: any = await Follow.find({
             where: [
-                { following: Equal(userSeq) },
-                { follower: Equal(userSeq) },
-            ],
-            relations: ['following', 'follower']
-        });
-
-        rFollowings = _.filter(rFollowings, follow => {
-            return follow.follower.userSeq === userSeq ? follow.isChecked : true
-        });
-
-        return rFollowings;
-    }
-
-    // 사용자 팔로잉 조회
-    async findUserFollowerList(userSeq: number) {
-        let rFollowers: any = await Follow.find({
-            where: [ // ! OR
                 { follower: Equal(userSeq) },
                 { following: Equal(userSeq) }
             ],
             relations: ['following', 'follower']
         });
 
-        rFollowers = _.filter(rFollowers, follow => {
-            return follow.following.userSeq === userSeq ? follow.isChecked : true
+        const followings: any[] = [];
+
+        _.forEach(rFollows, follow => {
+            if (follow.following.userSeq === userSeq) { // 현재 사용자가 팔로잉 한 경우 팔로워 Push
+                follow.follower.followSeq = follow.followSeq;
+                follow.follower.checked = follow.checked;
+                followings.push(follow.follower);
+            } else if (follow.checked) { // 현재 사용자가 팔로우 당한 경우 수락여부로 팔로잉 Push
+                follow.following.followSeq = follow.followSeq;
+                follow.following.checked = follow.checked;
+                followings.push(follow.following);
+            }
+        })
+
+        // 이름순 정렬
+        const resultFollowings = _.sortBy(followings, 'name');
+
+        return resultFollowings;
+    }
+
+    // 사용자 팔로워 조회
+    async findUserFollowerList(userSeq: number) {
+        const rFollows: any = await Follow.find({
+            where: [ // ! OR
+                { following: Equal(userSeq) },
+                { follower: Equal(userSeq) }
+            ],
+            relations: ['following', 'follower'],
+            order: {
+                checked: 'ASC' // checked:0 요청상태 먼저 정렬한다.
+            },
         });
 
-        return rFollowers;
+        const followers: any[] = [];
+
+        _.forEach(rFollows, follow => {
+            if (follow.following.userSeq === userSeq && follow.checked) { // 현재 사용자가 팔로잉 한 경우 상대방의 수락여부로 팔로워 Push
+                follow.follower.followSeq = follow.followSeq;
+                follow.follower.checked = follow.checked;
+                followers.push(follow.follower);
+            } else {
+                follow.following.followSeq = follow.followSeq;
+                follow.following.checked = follow.checked;
+                followers.push(follow.following);
+            }
+        });
+
+        // 이름순으로 정렬. 요청상태 [1-1]를 우선한다.
+        const resultFollowers = _.merge(
+            _.sortBy(_.filter(followers, follow => !follow.checked), 'name'), // 요청상태 [1-1]
+            _.sortBy(_.filter(followers, follow => follow.checked), 'name')
+        )
+
+        return resultFollowers;
     }
 
     async findOtherUserList(userSeq: number) {

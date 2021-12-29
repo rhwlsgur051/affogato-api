@@ -24,7 +24,6 @@ async function bootstrap() {
         BoardResolver // 게시판
     ];
 
-    // resolvers: [__dirname + "/**/*.resolver.ts"],
     const schema = await buildSchema({
         resolvers,
         validate: false,
@@ -35,6 +34,7 @@ async function bootstrap() {
         schema,
         playground: true,
         context: async ({ req }) => {
+            // TODO 인증절차 로직 임시 주석
             // if (!req.headers.authorization) throw new AuthenticationError("Need Token")
             if (!req.headers.authorization) return { user: undefined };
             const tUser: any = jwt.decode(req.headers.authorization.substr(7));

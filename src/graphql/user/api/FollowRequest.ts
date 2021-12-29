@@ -7,5 +7,12 @@ export class FollowRequest {
 
     @Field()
     followerUserSeq!: number;
+}
 
+@ArgsType()
+export class AcceptFollowRequest {
+    @Field()
+    userSeq!: number;
+    @Field()
+    followSeq!: number;
 }
