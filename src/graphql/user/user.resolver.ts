@@ -20,7 +20,7 @@ export class UserResolver {
    * 사용자 목록조회
    * 
    * 기본적으로 자신의 데이터는 제외한다.
-   * @returns 사용자 목록 배열
+   * @return User[]
    */
   @Query(() => [UserResponse])
   findUserList(@Ctx() ctx: any) {

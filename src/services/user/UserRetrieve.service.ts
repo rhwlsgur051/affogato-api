@@ -7,7 +7,10 @@ import { Follow } from '../../graphql/user/entity/Follow.entity';
 
 @Service()
 export class UserRetrieveService {
-    // 사용자 목록 조회
+    /** 사용자 목록 조회
+     * 
+     * @param userSeq 요청자 PK
+    */
     async find(userSeq?: number) {
         const conditions: any = {};
         if (userSeq) {
@@ -18,7 +21,10 @@ export class UserRetrieveService {
         return rUsers;
     }
 
-    // 사용자 단건 조회
+    /** 
+     * 사용자 목록 조회
+     * @param userSeq 사용자 PK
+    */
     async findOne(userSeq: number) {
         const conditions: any = {
             userSeq: Equal(userSeq)
@@ -31,7 +37,10 @@ export class UserRetrieveService {
         return rUser;
     }
 
-    // 사용자 팔로잉 조회
+    /** 
+     * 사용자 팔로잉 목록 조회
+     * @param userSeq 요청자 PK
+    */
     async findUserFollowingList(userSeq: number) {
         const rFollows: any = await Follow.find({
             where: [
@@ -55,13 +64,16 @@ export class UserRetrieveService {
             }
         })
 
-        // 이름순 정렬
+        /** 이름순 정렬 */
         const resultFollowings = _.sortBy(followings, 'name');
 
         return resultFollowings;
     }
 
-    // 사용자 팔로워 조회
+    /** 
+     * 사용자 팔로워 조회 
+     * @param userSeq 사용자 PK
+     * */
     async findUserFollowerList(userSeq: number) {
         const rFollows: any = await Follow.find({
             where: [ // ! OR
@@ -88,7 +100,7 @@ export class UserRetrieveService {
             }
         });
 
-        // 이름순으로 정렬. 요청상태 [1-1]를 우선한다.
+        /** 이름순으로 정렬. 요청상태 [1-1]를 우선한다. */
         const resultFollowers = _.merge(
             _.sortBy(_.filter(followers, follow => !follow.checked), 'name'), // 요청상태 [1-1]
             _.sortBy(_.filter(followers, follow => follow.checked), 'name')
@@ -97,6 +109,11 @@ export class UserRetrieveService {
         return resultFollowers;
     }
 
+    /**
+     * 요청자, 팔로우, 팔로잉 제외 사용자목록 조회
+     * @param userSeq 사용자 PK
+     * 
+     */
     async findOtherUserList(userSeq: number) {
         const rUser: any = await User.findOne({ userSeq: Equal(userSeq) }, { relations: ['following'] });
         const rOtherUsers: any = await User.find({ where: { userSeq: Not(userSeq) }, relations: ['following'] });
