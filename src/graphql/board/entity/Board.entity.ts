@@ -14,7 +14,7 @@ export class Board extends BaseEntity {
     title!: string;
 
     @Field(() => String)
-    @Column()
+    @Column("text")
     content!: string;
 
     @Field(() => Boolean)
