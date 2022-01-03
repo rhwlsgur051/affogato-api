@@ -75,6 +75,18 @@ async function initUsers(): Promise<any> {
             password: '1234',
             email: 'gogel0118@gmail.com',
         });
+
+        await User.insert({
+            name: '홍길동1',
+            password: '1234',
+            email: 'hong1@gmail.com',
+        });
+        
+        await User.insert({
+            name: '홍길동2',
+            password: '1234',
+            email: 'hong2@gmail.com',
+        });
     }
 }
 

@@ -115,18 +115,20 @@ export class UserRetrieveService {
      * 
      */
     async findOtherUserList(userSeq: number) {
-        const rUser: any = await User.findOne({ userSeq: Equal(userSeq) }, { relations: ['following'] });
-        const rOtherUsers: any = await User.find({ where: { userSeq: Not(userSeq) }, relations: ['following'] });
+        const rUser: User | undefined = await User.findOne({ userSeq: Equal(userSeq) }, { relations: ['following', 'followers'] });
+        if (!rUser) {
+            throw new UserError().USER001;
+        }
 
-        _.forEach(rOtherUsers, otherUser => {
-            const followUser = _.find(rUser.following, follow => follow === otherUser);
-            otherUser.isSynced = !_.isUndefined(followUser);
-
-            if (otherUser.isSynced) {
-                otherUser.checked = followUser.checked;
+        const rFollows: any = await Follow.find({
+            where:  // ! OR
+            {
+                following: Not(userSeq),
+                follower: Not(userSeq)
             }
         });
-
-        return rOtherUsers;
+        
+        console.log(rFollows);
+        return [];
     }
 }
