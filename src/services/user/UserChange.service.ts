@@ -63,10 +63,12 @@ export class UserChangeService {
             throw new UserError().USER001;
         }
 
-        if (!rUser.following.includes(targetUser)) {
-            rUser.following.push(targetUser);
-            await rUser.save();
-        }
+        const follow = new Follow(rUser,targetUser,false);
+        await follow.save();
+        // if (!rUser.following.includes(targetUser)) {
+        //     rUser.following.push(targetUser);
+        //     await rUser.save();
+        // }
 
         return true;
     }

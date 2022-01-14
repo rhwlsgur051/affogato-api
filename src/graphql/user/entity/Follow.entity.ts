@@ -6,24 +6,18 @@ import {
   Column,
   UpdateDateColumn,
   BaseEntity,
-} from 'typeorm';
-import { User } from './User.entity';
+} from "typeorm";
+import { User } from "./User.entity";
 
 @Entity()
 export class Follow extends BaseEntity {
   @PrimaryGeneratedColumn()
   followSeq!: number;
 
-  @ManyToOne(
-    () => User,
-    user => user.following
-  )
+  @ManyToOne(() => User, (user) => user.following)
   following!: User;
 
-  @ManyToOne(
-    () => User,
-    user => user.followers
-  )
+  @ManyToOne(() => User, (user) => user.followers)
   follower!: User;
 
   @Column({ type: Boolean, default: false })
@@ -34,4 +28,11 @@ export class Follow extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  constructor(following: User, follower: User, checked: Boolean) {
+    super();
+    this.following = following;
+    this.follower = follower;
+    this.checked = checked;
+  }
 }
