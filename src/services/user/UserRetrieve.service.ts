@@ -132,20 +132,18 @@ export class UserRetrieveService {
     });
 
     const rFollows: any = await Follow.find({
-      // ! OR
-      where: {
-        following: Not(userSeq),
-        follower: Not(userSeq),
-      },
+      where: [
+        { following: Equal(userSeq) },
+        { follower: Equal(userSeq) },
+      ],
+      relations: ['following', 'follower']
     });
 
-    return _.filter(
-      rUsers,
-      (user) =>
-        !_.includes(
-          _.merge(_.map(rFollows, "following"), _.map(rFollows, "follower")),
-          user
-        )
-    );
+    const allFollowUsers: User[] = _.merge(_.map(rFollows, "following"), _.map(rFollows, "follower"));
+    const result = _.filter(rUsers, (user: User) => {
+      return !_.includes(_.map(allFollowUsers, 'userSeq'), user.userSeq);
+    });
+
+    return result;
   }
 }
