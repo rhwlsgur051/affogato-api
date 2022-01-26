@@ -4,6 +4,7 @@ import { User } from "../../graphql/user/entity/User.entity";
 import { Equal, Not } from "typeorm";
 import { UserError } from "../../common/error/UserError";
 import { Follow } from "../../graphql/user/entity/Follow.entity";
+import { GlobalError } from "../../common/error/GlobalError";
 
 @Service()
 export class UserRetrieveService {
@@ -32,7 +33,7 @@ export class UserRetrieveService {
 
     const rUser = await User.findOne(conditions);
     if (!rUser) {
-      throw new UserError().USER001;
+      throw new GlobalError(UserError.USER001);
     }
     return rUser;
   }

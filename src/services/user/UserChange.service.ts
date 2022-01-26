@@ -6,6 +6,7 @@ import { Equal } from "typeorm";
 import { AcceptFollowRequest } from "../../graphql/user/api/FollowRequest";
 import { Follow } from "../../graphql/user/entity/Follow.entity";
 import { ChangePasswordRequest } from "../../graphql/user/api/UserRequest";
+import { GlobalError } from "../../common/error/GlobalError";
 
 @Service()
 export class UserChangeService {
@@ -38,7 +39,7 @@ export class UserChangeService {
         const isCorrect = await bcrypt.compareSync(oldPassword, rUser.password)
 
         if (!isCorrect) {
-            throw new UserError().USER002;
+            throw new GlobalError(UserError.USER002);
         }
 
         if (newPassword === newPasswordConfirm) { // 서버측에서 한번 더 유효성 검증
@@ -60,7 +61,7 @@ export class UserChangeService {
         });
 
         if (!rUser || !targetUser) {
-            throw new UserError().USER001;
+            throw new GlobalError(UserError.USER001);
         }
 
         const follow = new Follow(rUser,targetUser,false);
@@ -85,7 +86,7 @@ export class UserChangeService {
         });
 
         if (!rFollow || rFollow.follower.userSeq !== userSeq) {
-            throw new UserError().USER001;
+            throw new GlobalError(UserError.USER001);
         }
 
         rFollow.checked = true;

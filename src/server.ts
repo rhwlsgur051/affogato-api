@@ -1,6 +1,4 @@
 'use strict'
-import dotenv from "dotenv";
-import path from "path";
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import jwt from 'jsonwebtoken';
@@ -10,7 +8,7 @@ import { createConnection } from 'typeorm';
 
 import { AuthResolver } from './graphql/auth/auth.resolver';
 import Container from 'typedi';
-import { UserResolver } from './graphql/user/User.resolver';
+import { UserResolver } from './graphql/user/user.resolver';
 import { BoardResolver } from './graphql/board/board.resolver';
 import { setEnv } from './config';
 import { User } from "./graphql/user/entity/User.entity";
@@ -18,6 +16,7 @@ import { User } from "./graphql/user/entity/User.entity";
 async function bootstrap() {
     await setEnv();
 
+    // ! --- Apollo Server Settings START
     const resolvers: any = [
         AuthResolver, // 인증
         UserResolver, // 사용자
@@ -30,18 +29,41 @@ async function bootstrap() {
         container: Container
     });
 
+    /** GraphQL 플레이그라운드 지원 여부*/
+    const playground = true;
+
+    /** 프론트에게 스택트레이스 제공 여부 */
+    const debug = false;
+
+    /** 인증절차 컨텍스트 */
+    const context = async (req: any) => {
+        // ?? 인증절차 로직 임시 주석
+        // if (!req.headers.authorization) throw new AuthenticationError("Need Token")
+        if (!req.headers.authorization) return { user: undefined };
+        const tUser: any = jwt.decode(req.headers.authorization.substr(7));
+        // const rUser:any = await User.findOne({userSeq: Equal(tUser.userSeq)});
+        // return { user: rUser };
+    }
+
+    /** 에러 로그를 위한 에러 포맷 */
+    const formatError = (error: any) => {
+        console.error("--- GraphQL Error ---");
+        console.error("Path:", error.path);
+        console.error("Message:", error.message);
+        console.error("Code:", error.extensions.code);
+        console.error("Original Error", error.originalError);
+        return error;
+    };
+
     const server = new ApolloServer({
         schema,
-        playground: true,
-        context: async ({ req }) => {
-            // TODO 인증절차 로직 임시 주석
-            // if (!req.headers.authorization) throw new AuthenticationError("Need Token")
-            if (!req.headers.authorization) return { user: undefined };
-            const tUser: any = jwt.decode(req.headers.authorization.substr(7));
-            // const rUser:any = await User.findOne({userSeq: Equal(tUser.userSeq)});
-            // return { user: rUser };
-        }
+        playground,
+        context,
+        formatError,
+        debug
     });
+
+    // ! --- Apollo Server Settings END
 
     const app = express();
     app.use(express.json());
@@ -81,7 +103,7 @@ async function initUsers(): Promise<any> {
             password: '1234',
             email: 'hong1@gmail.com',
         });
-        
+
         await User.insert({
             name: '홍길동2',
             password: '1234',

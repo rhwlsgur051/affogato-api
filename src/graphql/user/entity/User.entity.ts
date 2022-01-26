@@ -1,4 +1,4 @@
-import { PasswordTransformer } from "../../../common/transformers/PasswordTransformer";
+import { PasswordTransformer } from "../../../common/transform/PasswordTransformer";
 import { Field, ID, ObjectType } from "type-graphql";
 import { BaseEntity, Column, CreateDateColumn, Entity, getRepository, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, RelationCount, UpdateDateColumn } from "typeorm";
 import { Follow } from "./Follow.entity";
