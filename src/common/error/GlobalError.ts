@@ -7,6 +7,5 @@ export class GlobalError extends ApolloError {
     ) {
         const { code, message } = error;
         super(code, message);
-        
     }
 }
