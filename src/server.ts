@@ -38,9 +38,10 @@ async function bootstrap() {
     /** 인증절차 컨텍스트 */
     const context = async (req: any) => {
         // ?? 인증절차 로직 임시 주석
+        // const {headers} = req.req;
         // if (!req.headers.authorization) throw new AuthenticationError("Need Token")
-        if (!req.headers.authorization) return { user: undefined };
-        const tUser: any = jwt.decode(req.headers.authorization.substr(7));
+        // if (!req.headers.authorization) return { user: undefined };
+        // const tUser: any = jwt.decode(req.headers.authorization.substr(7));
         // const rUser:any = await User.findOne({userSeq: Equal(tUser.userSeq)});
         // return { user: rUser };
     }

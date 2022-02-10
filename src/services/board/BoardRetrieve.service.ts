@@ -14,6 +14,8 @@ export class BoardRetrieveService {
         const rBoards: any = await Board.find({
             where: {
                 isDeleted: false
+            }, order: {
+                boardSeq: -1
             },
             relations: ["user"]
         });
