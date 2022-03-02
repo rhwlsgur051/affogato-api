@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { Mutation, Resolver, Args, Query } from 'type-graphql';
+import { Mutation, Resolver, Args, Query, Authorized } from 'type-graphql';
 import { AuthService } from '../../services/auth/AuthService';
 import { AuthResponse, AuthRequest } from './auth.type';
 

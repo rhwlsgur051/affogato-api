@@ -26,7 +26,11 @@ async function bootstrap() {
     const schema = await buildSchema({
         resolvers,
         validate: false,
-        container: Container
+        container: Container,
+        authChecker: ({ context }) => {
+            // console.log('--->',context);
+            return true;
+        }
     });
 
     /** GraphQL 플레이그라운드 지원 여부*/
@@ -37,18 +41,26 @@ async function bootstrap() {
 
     /** 인증절차 컨텍스트 */
     const context = async (req: any) => {
-        // ?? 인증절차 로직 임시 주석
-        // const {headers} = req.req;
-        // if (!req.headers.authorization) throw new AuthenticationError("Need Token")
-        // if (!req.headers.authorization) return { user: undefined };
-        // const tUser: any = jwt.decode(req.headers.authorization.substr(7));
-        // const rUser:any = await User.findOne({userSeq: Equal(tUser.userSeq)});
-        // return { user: rUser };
+        const { headers } = req.req;
+        console.log('context in.');
+        if (headers.authorization) {
+            try {
+                const verify = jwt.verify(headers.authorization.substr(7), process.env.JWT_SECRET_KEY || '');
+                console.log('===>', verify);
+                return verify;
+            } catch (error: any) {
+                throw error
+            }
+
+        } else {
+            return true;
+        }
     }
 
     /** 에러 로그를 위한 에러 포맷 */
     const formatError = (error: any) => {
         console.error("--- GraphQL Error ---");
+        console.error("Name:", error.name);
         console.error("Path:", error.path);
         console.error("Message:", error.message);
         console.error("Code:", error.extensions.code);

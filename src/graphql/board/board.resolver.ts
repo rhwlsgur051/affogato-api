@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { Arg, Args, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Args, Authorized, Mutation, Query, Resolver } from 'type-graphql';
 import { BoardChangeService } from '../../services/board/BoardChange.service';
 import { BoardRetrieveService } from '../../services/board/BoardRetrieve.service';
 import { BoardResponse } from './api/BoardResponse';
@@ -15,6 +15,7 @@ export class BoardResolver {
   ) { }
 
   @Query(() => [BoardResponse])
+  @Authorized()
   findBoardList() {
     return this.boardRetrieveService.find();
   }
