@@ -21,6 +21,7 @@ async function bootstrap() {
         AuthResolver, // 인증
         UserResolver, // 사용자
         BoardResolver // 게시판
+        // TODO 채팅
     ];
 
     const schema = await buildSchema({
