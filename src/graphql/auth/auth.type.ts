@@ -4,7 +4,7 @@ import { ArgsType, Field, ObjectType } from "type-graphql";
 @ArgsType()
 export class AuthRequest {
     @Field()
-    email!: string;
+    id!: string;
     @Field()
     password!: string;
 }
@@ -12,6 +12,8 @@ export class AuthRequest {
 // 응답객체
 @ObjectType()
 export class AuthResponse {
+    @Field()
+    id!: string;
     @Field()
     name!: string;
     @Field()

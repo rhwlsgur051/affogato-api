@@ -13,6 +13,10 @@ export class User extends BaseEntity {
 
   @Field(() => String)
   @Column()
+  id!: string;
+
+  @Field(() => String)
+  @Column()
   name!: string;
 
   @Field(() => String)

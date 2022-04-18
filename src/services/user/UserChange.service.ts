@@ -13,7 +13,10 @@ export class UserChangeService {
     /** 사용자 생성 */
     async create(body: any) {
         const rUser = await User.findOne({
-            email: Equal(body.email)
+            where: [
+                { id: Equal(body.id) },
+                { email: Equal(body.email) }
+            ]
         })
 
         if (rUser) {
@@ -64,7 +67,7 @@ export class UserChangeService {
             throw new GlobalError(UserError.USER001);
         }
 
-        const follow = new Follow(rUser,targetUser,false);
+        const follow = new Follow(rUser, targetUser, false);
         await follow.save();
         // if (!rUser.following.includes(targetUser)) {
         //     rUser.following.push(targetUser);

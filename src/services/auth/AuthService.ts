@@ -7,9 +7,9 @@ import { Equal } from 'typeorm';
 
 @Service()
 export class AuthService {
-    auth = async (body: { email: string, password: string }) => {
+    auth = async (body: { id: string, password: string }) => {
         // 이메일로 사용자 조회
-        const user = await User.findOne({ email: Equal(body.email) })
+        const user = await User.findOne({ id: Equal(body.id) })
 
         if (!user) {
             throw new AuthError().AU001;
@@ -22,7 +22,7 @@ export class AuthService {
 
         const token = jwt.sign({
             name: user.name,
-            email: user.email
+            id: user.id
         }, process.env.JWT_SECRET_KEY || '', {
             expiresIn: '1d'
         });
@@ -31,7 +31,7 @@ export class AuthService {
             token,
             name: user.name,
             userSeq: user.userSeq,
-            email: user.email,
+            id: user.id,
         };
     }
 }
