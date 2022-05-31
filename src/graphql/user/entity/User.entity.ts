@@ -4,7 +4,7 @@ import { BaseEntity, Column, CreateDateColumn, Entity, getRepository, JoinTable,
 import { Follow } from "./Follow.entity";
 import { Board } from "../../board/entity/Board.entity";
 
-@Entity({ name: "Users" })
+@Entity({ name: "User" })
 @ObjectType()
 export class User extends BaseEntity {
   @Field(() => ID)

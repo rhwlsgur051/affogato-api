@@ -2,7 +2,7 @@ import { User } from "../../user/entity/User.entity";
 import { Field, ID, ObjectType } from "type-graphql";
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity({ name: "Boards" })
+@Entity({ name: "Board" })
 @ObjectType()
 export class Board extends BaseEntity {
     @Field(() => ID)
