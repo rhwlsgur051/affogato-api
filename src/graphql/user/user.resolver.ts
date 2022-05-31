@@ -4,7 +4,7 @@ import { UserChangeService } from '../../services/user/UserChange.service';
 import { UserRetrieveService } from '../../services/user/UserRetrieve.service';
 import { CreateRequest, ChangePasswordRequest } from './api/UserRequest';
 import { UserResponse, OtherUserResponse } from './api/UserResponse';
-import { FollowRequest, AcceptFollowRequest } from './api/FollowRequest';
+import { FollowRequest } from './api/FollowRequest';
 import { FollowResponse } from './api/FollowResponse';
 
 @Service()
@@ -52,14 +52,14 @@ export class UserResolver {
   // ! ----- Custom CRUD -----
   /** 내가 팔로우하는 친구 목록 조회 */
   @Query(() => [FollowResponse])
-  findUserFollowingList(@Arg('userSeq') userSeq: number) {
-    return this.userRetrieveService.findUserFollowingList(userSeq);
+  findFromUserList(@Arg('userSeq') userSeq: number) {
+    return this.userRetrieveService.findFromUserList(userSeq);
   }
 
   /** 팔로워 목록 조회 */
   @Query(() => [FollowResponse])
-  findUserFollowerList(@Arg('userSeq') userSeq: number) {
-    return this.userRetrieveService.findUserFollowerList(userSeq);
+  findToUserList(@Arg('userSeq') userSeq: number) {
+    return this.userRetrieveService.findToUserList(userSeq);
   }
 
   /** 사용자 목록 조회 (본인제외) */
@@ -72,12 +72,6 @@ export class UserResolver {
   @Mutation(() => Boolean)
   followUser(@Args() body: FollowRequest) {
     return this.userChangeService.followUser(body);
-  }
-
-  /** 사용자 팔로우 수락 */
-  @Mutation(() => Boolean)
-  acceptFollow(@Args() body: AcceptFollowRequest) {
-    return this.userChangeService.acceptFollow(body);
   }
 
 }

@@ -6,6 +6,6 @@ export class GlobalError extends ApolloError {
         error: ErrorInterface
     ) {
         const { code, message } = error;
-        super(code, message);
+        super(message, code);
     }
 }

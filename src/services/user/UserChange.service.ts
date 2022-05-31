@@ -3,10 +3,11 @@ import bcrypt from 'bcrypt';
 import { UserError } from "../../common/error/UserError";
 import { User } from "../../graphql/user/entity/User.entity";
 import { Equal } from "typeorm";
-import { AcceptFollowRequest } from "../../graphql/user/api/FollowRequest";
+import { FollowRequest } from "../../graphql/user/api/FollowRequest";
 import { Follow } from "../../graphql/user/entity/Follow.entity";
 import { ChangePasswordRequest } from "../../graphql/user/api/UserRequest";
 import { GlobalError } from "../../common/error/GlobalError";
+import _ from "lodash";
 
 @Service()
 export class UserChangeService {
@@ -54,46 +55,27 @@ export class UserChangeService {
     }
 
     /** 친구 팔로잉 */
-    async followUser(body: any) {
+    async followUser(body: FollowRequest) {
         const rUser: any = await User.findOne({
-            userSeq: Equal(body.followingUserSeq)
-        }, { relations: ['following'] });
+            userSeq: Equal(body.toUserSeq)
+        }, { relations: ['toUser'] });
 
         const targetUser: any = await User.findOne({
-            userSeq: Equal(body.followerUserSeq)
+            userSeq: Equal(body.fromUserSeq)
         });
 
         if (!rUser || !targetUser) {
             throw new GlobalError(UserError.USER001);
         }
 
-        const follow = new Follow(rUser, targetUser, false);
-        await follow.save();
-        // if (!rUser.following.includes(targetUser)) {
-        //     rUser.following.push(targetUser);
-        //     await rUser.save();
-        // }
+        const isAvailable = _.isEmpty(await Follow.findOne({ where: { fromUser: rUser, toUser: targetUser } }))
 
-        return true;
-    }
-
-    /** 팔로우 수락 */
-    async acceptFollow(body: AcceptFollowRequest) {
-        const { userSeq, followSeq } = body;
-
-        const rFollow: any = await Follow.findOne({
-            where: {
-                followSeq: Equal(followSeq)
-            },
-            relations: ['following', 'follower']
-        });
-
-        if (!rFollow || rFollow.follower.userSeq !== userSeq) {
-            throw new GlobalError(UserError.USER001);
+        if (isAvailable) {
+            const follow = new Follow(rUser, targetUser);
+            await follow.save();
+            return true;
+        } else {
+            throw new GlobalError(UserError.USER003);
         }
-
-        rFollow.checked = true;
-        const result = await rFollow.save();
-        return result.checked;
     }
 }

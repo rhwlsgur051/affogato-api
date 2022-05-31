@@ -1,18 +1,12 @@
 import { Field, ObjectType } from "type-graphql";
+import { User } from "../entity/User.entity";
+import { UserResponse } from "./UserResponse";
 @ObjectType()
 export class FollowResponse {
     @Field()
     followSeq!: number;
     @Field()
-    id!: string;
+    fromUser!: UserResponse;
     @Field()
-    name!: string;
-    @Field()
-    email!: string;
-    @Field()
-    userSeq!: number;
-    @Field()
-    checked!: boolean;
-    @Field()
-    createdAt!: Date;
+    toUser!: UserResponse;
 }
