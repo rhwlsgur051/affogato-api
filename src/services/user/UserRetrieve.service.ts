@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { Service } from "typedi";
 import { User } from "../../graphql/user/entity/User.entity";
-import { Equal, Not } from "typeorm";
+import { Equal, In, Not, QueryBuilder } from "typeorm";
 import { UserError } from "../../common/error/UserError";
 import { Follow } from "../../graphql/user/entity/Follow.entity";
 import { GlobalError } from "../../common/error/GlobalError";
@@ -58,13 +58,26 @@ export class UserRetrieveService {
    * @param userSeq 사용자 PK
    * */
   async findToUserList(userSeq: number) {
-    const rToUsers: any = await Follow.find({
-      where: {
-        toUser: Equal(userSeq)
-      }
+    const allMyFollows: Follow[] = await Follow.find({
+      where: [
+        {
+          toUser: Equal(userSeq),
+        },
+        {
+          fromUser: Equal(userSeq),
+        }
+      ],
+      relations: ['toUser', 'fromUser']
     });
 
-    return rToUsers;
+    const toUserFollows: any = _.filter(allMyFollows, follow => follow.toUser.userSeq === userSeq) // 피구독 데이터
+
+    toUserFollows.forEach((follow: any) => {
+      const canFollow = _.isUndefined(_.find(allMyFollows, amFollow => amFollow.fromUser.userSeq === userSeq));
+      follow.canFollow = canFollow;
+    })
+
+    return toUserFollows;
   }
 
   /**
@@ -73,18 +86,21 @@ export class UserRetrieveService {
    *
    */
   async findOtherUserList(userSeq: number) {
+    const rFromUsers: any = await Follow.find({
+      where: {
+        fromUser: Equal(userSeq)
+      },
+      relations: ['toUser', 'fromUser']
+    });
+
+    const otherIds = _.map(_.map(rFromUsers, 'toUser'), 'userSeq');
+
     const rUsers: User[] = await User.find({
-      relations: ["toUser", "fromUser"],
+      where: {
+        userSeq: Not(In(otherIds.concat(userSeq)))
+      }
     });
-
-    const me = _.find(rUsers, user => user.userSeq === userSeq);
-
-    const result = _.filter(rUsers, user => {
-      return _.filter(user.fromUser, (fromUser: User) => {
-        return fromUser.userSeq !== userSeq;
-      }) && user !== me;
-    });
-
-    return result;
+    // TODO 위 로직을 한번의 DB조회로 만들 것
+    return rUsers;
   }
 }

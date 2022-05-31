@@ -9,4 +9,6 @@ export class FollowResponse {
     fromUser!: UserResponse;
     @Field()
     toUser!: UserResponse;
+    @Field()
+    canFollow?: boolean;
 }
