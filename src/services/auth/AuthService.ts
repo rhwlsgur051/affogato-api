@@ -22,7 +22,8 @@ export class AuthService {
 
         const token = jwt.sign({
             name: user.name,
-            id: user.id
+            id: user.id,
+            userSeq: user.userSeq,
         }, process.env.JWT_SECRET_KEY || '', {
             expiresIn: '1d'
         });

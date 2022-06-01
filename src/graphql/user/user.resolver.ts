@@ -1,11 +1,11 @@
-import { Service } from 'typedi';
-import { Arg, Args, Ctx, Mutation, Query, Resolver } from 'type-graphql';
-import { UserChangeService } from '../../services/user/UserChange.service';
-import { UserRetrieveService } from '../../services/user/UserRetrieve.service';
-import { CreateRequest, ChangePasswordRequest } from './api/UserRequest';
-import { UserResponse, OtherUserResponse } from './api/UserResponse';
-import { FollowRequest } from './api/FollowRequest';
-import { FollowResponse } from './api/FollowResponse';
+import { Service } from "typedi";
+import { Arg, Args, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { UserChangeService } from "../../services/user/UserChange.service";
+import { UserRetrieveService } from "../../services/user/UserRetrieve.service";
+import { CreateRequest, ChangePasswordRequest } from "./api/UserRequest";
+import { UserResponse, OtherUserResponse } from "./api/UserResponse";
+import { FollowRequest } from "./api/FollowRequest";
+import { FollowResponse } from "./api/FollowResponse";
 
 @Service()
 @Resolver()
@@ -13,12 +13,12 @@ export class UserResolver {
   constructor(
     private readonly userChangeService: UserChangeService,
     private readonly userRetrieveService: UserRetrieveService
-  ) { }
+  ) {}
 
   //! ----- Default CRUD -----
   /**
    * 사용자 목록조회
-   * 
+   *
    * 기본적으로 자신의 데이터는 제외한다.
    * @return User[]
    */
@@ -33,14 +33,14 @@ export class UserResolver {
 
   /** 사용자 단건조회 */
   @Query(() => UserResponse)
-  findUser(@Arg('userSeq') userSeq: number) {
+  findUser(@Arg("userSeq") userSeq: number) {
     return this.userRetrieveService.findOne(userSeq);
   }
 
   /** 회원가입 */
   @Mutation(() => Boolean)
   createUser(@Args() body: CreateRequest) {
-    return this.userChangeService.create(body)
+    return this.userChangeService.create(body);
   }
 
   /** 비밀번호 변경 */
@@ -52,19 +52,19 @@ export class UserResolver {
   // ! ----- Custom CRUD -----
   /** 내가 팔로우하는 친구 목록 조회 */
   @Query(() => [FollowResponse])
-  findFromUserList(@Arg('userSeq') userSeq: number) {
+  findFromUserList(@Arg("userSeq") userSeq: number) {
     return this.userRetrieveService.findFromUserList(userSeq);
   }
 
   /** 팔로워 목록 조회 */
   @Query(() => [FollowResponse])
-  findToUserList(@Arg('userSeq') userSeq: number) {
+  findToUserList(@Arg("userSeq") userSeq: number) {
     return this.userRetrieveService.findToUserList(userSeq);
   }
 
   /** 사용자 목록 조회 (본인제외) */
   @Query(() => [OtherUserResponse])
-  findOtherUserList(@Arg('userSeq') userSeq: number) {
+  findOtherUserList(@Arg("userSeq") userSeq: number) {
     return this.userRetrieveService.findOtherUserList(userSeq);
   }
 
@@ -74,4 +74,8 @@ export class UserResolver {
     return this.userChangeService.followUser(body);
   }
 
+  @Mutation(() => Boolean)
+  cancelToUser(@Ctx() ctx: any, @Arg("followSeq") followSeq: number) {
+    return this.userChangeService.cancelToUser(ctx,followSeq);
+  }
 }

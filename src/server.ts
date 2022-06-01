@@ -43,11 +43,9 @@ async function bootstrap() {
     /** 인증절차 컨텍스트 */
     const context = async (req: any) => {
         const { headers } = req.req;
-        console.log('context in.');
         if (headers.authorization) {
             try {
                 const verify = jwt.verify(headers.authorization.substr(7), process.env.JWT_SECRET_KEY || '');
-                console.log('===>', verify);
                 return verify;
             } catch (error: any) {
                 throw error
