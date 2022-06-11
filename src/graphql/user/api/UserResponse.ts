@@ -9,7 +9,7 @@ export class UserResponse {
     @Field()
     email!: string;
     @Field()
-    userSeq!: string;
+    userSeq!: number;
 }
 
 @ObjectType()
@@ -21,9 +21,5 @@ export class OtherUserResponse {
     @Field()
     email!: string;
     @Field()
-    userSeq!: string;
-    @Field()
-    isSynced!: boolean;
-    @Field({ nullable: true })
-    checekd!: boolean;
+    userSeq!: number;
 }

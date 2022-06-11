@@ -1,12 +1,12 @@
-import { User } from "../../user/entity/User.entity";
 import { Field, ObjectType } from "type-graphql";
+import { UserResponse } from "../../user/api/UserResponse";
 
 @ObjectType()
 export class BoardResponse {
     @Field()
     boardSeq!: number;
-    @Field(type => User)
-    user!: User;
+    @Field(type => UserResponse)
+    user!: UserResponse;
     @Field()
     title!: string;
     @Field()
