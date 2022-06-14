@@ -1,6 +1,0 @@
-import { ForbiddenError } from "apollo-server-express";
-
-export class BoardError {
-    /** 게시글을 찾을 수 없습니다. */
-    public readonly Board001 = new ForbiddenError('게시글을 찾을 수 없습니다.');
-}

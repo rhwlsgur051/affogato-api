@@ -11,15 +11,19 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity({ name: "Message" })
+@Entity({ name: "Feed" })
 @ObjectType()
-export class Message extends BaseEntity {
+export class Feed extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  messageSeq!: number;
+  feedSeq!: number;
 
   @Field(() => String)
   @Column()
+  title!: string;
+
+  @Field(() => String)
+  @Column("text")
   content!: string;
 
   @Field(() => Boolean)
@@ -44,11 +48,14 @@ export class Message extends BaseEntity {
   /**
    * 생성자
    *
+   * @param title 제목
    * @param content 내용
    * @param isDeleted 삭제여부
+   * @param user 사용자
    */
-  constructor(content: string, isDeleted: boolean) {
+  constructor(title: string, content: string, isDeleted: boolean) {
     super();
+    this.title = title;
     this.content = content;
     this.isDeleted = isDeleted;
   }

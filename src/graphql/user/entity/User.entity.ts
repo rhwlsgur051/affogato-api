@@ -1,8 +1,17 @@
 import { PasswordTransformer } from "../../../common/transform/PasswordTransformer";
 import { Field, ID, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, getRepository, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  getRepository,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { Follow } from "./Follow.entity";
-import { Board } from "../../board/entity/Board.entity";
+import { Feed } from "../../feed/entity/Feed.entity";
 
 @Entity({ name: "User" })
 @ObjectType()
@@ -27,31 +36,23 @@ export class User extends BaseEntity {
   @Column({ transformer: new PasswordTransformer() })
   password!: string;
 
-  @Column('timestampz')
+  @Column("timestampz")
   @CreateDateColumn()
   createdAt?: string;
 
-  @Column('timestampz')
+  @Column("timestampz")
   @UpdateDateColumn()
   updatedAt?: string;
 
-  @OneToMany(
-    () => Follow,
-    follow => follow.fromUser, { cascade: true }
-  )
+  @OneToMany(() => Follow, (follow) => follow.fromUser, { cascade: true })
   fromUser!: Follow[];
 
-  @OneToMany(
-    () => Follow,
-    follow => follow.toUser, { cascade: true }
-  )
+  @OneToMany(() => Follow, (follow) => follow.toUser, { cascade: true })
   toUser!: Follow[];
 
-  @OneToMany(() => Board, board => board.user, { cascade: true })
-  boards!: Board[];
+  @OneToMany(() => Feed, (feed) => feed.user, { cascade: true })
+  feeds!: Feed[];
 
   /** API */
-  static findAll = () =>
-    getRepository(User)
-      .find();
+  static findAll = () => getRepository(User).find();
 }
