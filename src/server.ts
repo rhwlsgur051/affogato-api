@@ -80,7 +80,7 @@ async function bootstrap() {
   // ! --- Apollo Server Settings END
 
   const app = express();
-  app.use(express.json());
+  app.use(express.json({ limit: "5mb" }));
 
   server.applyMiddleware({
     app,
