@@ -1,6 +1,6 @@
 "use strict";
 import express from "express";
-import { ApolloServer } from "apollo-server-express";
+import { ApolloError, ApolloServer } from "apollo-server-express";
 import jwt from "jsonwebtoken";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
@@ -12,6 +12,7 @@ import { UserResolver } from "./graphql/user/user.resolver";
 import { FeedResolver } from "./graphql/feed/feed.resolver";
 import { setEnv } from "./config";
 import { User } from "./graphql/user/entity/User.entity";
+import { GraphQLError } from "graphql";
 
 async function bootstrap() {
   await setEnv();
@@ -43,6 +44,8 @@ async function bootstrap() {
   /** 인증절차 컨텍스트 */
   const context = async (req: any) => {
     const { headers } = req.req;
+
+    console.log(headers.operationName);
     if (headers.authorization) {
       try {
         const verify = jwt.verify(
@@ -51,29 +54,30 @@ async function bootstrap() {
         );
         return verify;
       } catch (error: any) {
-        throw error;
+        throw new GraphQLError('jwt expired');
       }
     } else {
       return true;
     }
   };
 
-  /** 에러 로그를 위한 에러 포맷 */
-  const formatError = (error: any) => {
-    console.error("--- GraphQL Error ---");
-    console.error("Name:", error.name);
-    console.error("Path:", error.path);
-    console.error("Message:", error.message);
-    console.error("Code:", error.extensions.code);
-    console.error("Original Error", error.originalError);
-    return error;
-  };
+  // /** 에러 로그를 위한 에러 포맷 */
+  // const formatError = (error: any) => {
+  //   console.log('in');
+  //   console.error("--- GraphQL Error ---");
+  //   console.error("Name:", error.name);
+  //   console.error("Path:", error.path);
+  //   console.error("Message:", error.message);
+  //   console.error("Code:", error.extensions.code);
+  //   console.error("Original Error", error.originalError);
+  //   return error;
+  // };
 
   const server = new ApolloServer({
     schema,
     playground,
     context,
-    formatError,
+    // formatError,
     debug,
   });
 

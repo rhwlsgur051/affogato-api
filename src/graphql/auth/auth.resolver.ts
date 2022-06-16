@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { Mutation, Resolver, Args, Query, Authorized } from 'type-graphql';
+import { Mutation, Resolver, Args, Query, Authorized, Arg } from 'type-graphql';
 import { AuthService } from '../../services/auth/AuthService';
 import { AuthResponse, AuthRequest } from './auth.type';
 
@@ -18,4 +18,10 @@ export class AuthResolver {
   auth(@Args() body: AuthRequest) {
     return this.authService.auth(body);
   }
+
+  @Mutation(() => String)
+  getNewToken(@Arg('userSeq') userSeq: number, @Arg('rToken') rToken: string): Promise<string> {
+    return this.authService.getNewToken(userSeq, rToken);
+  }
+
 }
