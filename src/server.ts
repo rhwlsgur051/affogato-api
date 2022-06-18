@@ -1,9 +1,10 @@
 "use strict";
+import * as _ from 'lodash';
 import express from "express";
-import { ApolloError, ApolloServer } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
 import jwt from "jsonwebtoken";
 import "reflect-metadata";
-import { buildSchema } from "type-graphql";
+import { AuthChecker, buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 
 import { AuthResolver } from "./graphql/auth/auth.resolver";
@@ -13,6 +14,7 @@ import { FeedResolver } from "./graphql/feed/feed.resolver";
 import { setEnv } from "./config";
 import { User } from "./graphql/user/entity/User.entity";
 import { GraphQLError } from "graphql";
+import { IncomingMessage } from "http";
 
 async function bootstrap() {
   await setEnv();
@@ -29,9 +31,18 @@ async function bootstrap() {
     resolvers,
     validate: false,
     container: Container,
-    authChecker: ({ context }) => {
-      // console.log('--->',context);
-      return true;
+    authChecker: ({ context, args, info, root }) => {
+      console.log(info);
+      // here we can read the user from context
+      // and check his permission in the db against the `roles` argument
+      // that comes from the `@Authorized` decorator, eg. ["ADMIN", "MODERATOR"]
+
+      console.log('hello authchecker', info.fieldName);
+
+      if (!context.user) {
+        throw new GraphQLError('jwt expired');
+      }
+      return true; // or false if access is denied
     },
   });
 
@@ -41,23 +52,24 @@ async function bootstrap() {
   /** 프론트에게 스택트레이스 제공 여부 */
   const debug = false;
 
-  /** 인증절차 컨텍스트 */
-  const context = async (req: any) => {
-    const { headers } = req.req;
-
-    console.log(headers.operationName);
-    if (headers.authorization) {
+  /** 요청 컨텍스트 */
+  const context = async ({ req }: any) => {
+    const request: IncomingMessage = req;
+    if (request.headers.authorization) {
       try {
         const verify = jwt.verify(
-          headers.authorization.substr(7),
+          request.headers.authorization.substr(7),
           process.env.JWT_SECRET_KEY || ""
         );
-        return verify;
-      } catch (error: any) {
-        throw new GraphQLError('jwt expired');
+
+        const context = {
+          user: verify
+        }
+        return context;
+      } catch (error) {
+        console.log(error);
+        return false;
       }
-    } else {
-      return true;
     }
   };
 

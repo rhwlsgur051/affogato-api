@@ -4,6 +4,7 @@ import { AuthError } from '../../common/error/AuthError';
 import { Service } from 'typedi';
 import { User } from '../../graphql/user/entity/User.entity';
 import { Equal } from 'typeorm';
+import { GraphQLError } from 'graphql';
 
 @Service()
 export class AuthService {
@@ -28,8 +29,8 @@ export class AuthService {
             expiresIn: '3s'
         });
 
-        const rToken = jwt.sign({}, process.env.JWT_SECRET_KEY!, {
-            expiresIn: '1m'
+        const rToken = jwt.sign({}, process.env.JWT_SECRET_KEY || '', {
+            expiresIn: '5m'
         });
 
         return {
@@ -45,7 +46,7 @@ export class AuthService {
         try {
             jwt.verify(rToken, process.env.JWT_SECRET_KEY || "")
         } catch (error) {
-            throw null;
+            throw new GraphQLError('refresh token is expired')
         }
 
         const user = await User.findOne({ userSeq: Equal(userSeq) }); // 식별자로 사용자 조회
@@ -59,7 +60,7 @@ export class AuthService {
             id: user.id,
             userSeq: user.userSeq,
         }, process.env.JWT_SECRET_KEY || '', {
-            expiresIn: '3s'
+            expiresIn: '5s'
         });
 
         return token;

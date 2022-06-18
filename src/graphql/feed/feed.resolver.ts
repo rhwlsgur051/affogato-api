@@ -12,7 +12,7 @@ export class FeedResolver {
   constructor(
     private readonly feedChangeService: FeedChangeService,
     private readonly feedRetrieveService: FeedRetrieveService
-  ) {}
+  ) { }
 
   @Query(() => [FeedResponse])
   @Authorized()
